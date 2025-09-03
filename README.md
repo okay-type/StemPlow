@@ -14,7 +14,7 @@ You can edit its shortcut, behaviour and appearance by going to
 > - version 1.3
 >
 >   - Jackson added a feature to drop the Stem Plow display as a real Robofont Measurement, just press g while holding f
->   - Shortcut customizable in the settings
+>   - Shortcut customizable in the settings, change the key and change the extension distance (measurements sometimes need to be longer than the stem plow guide)
 >   - Probably needs more testing, I don't know what I'm doing!
 >   - <3 Jackson at okaytype com
 >

@@ -36,6 +36,8 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
 
         : Drop Measurement:
         [__]                                        @triggerCharacterMeasurement
+        : Extend Measurement:
+        [__]                                        @measurementExtend
 
         ---
 
@@ -66,7 +68,7 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
         colorWellHeight = 20
         numberEntryWidth = 75
         descriptionData = dict(
-            content=dict(titleColumnWidth=125, itemColumnWidth=265),
+            content=dict(titleColumnWidth=150, itemColumnWidth=300),
             measureAgainstComponents=dict(
                 value=internalGetDefault("measureAgainstComponents")
             ),
@@ -82,10 +84,15 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
                 value=internalGetDefault("useShortcutToMoveWhileAlways")
             ),
             triggerCharacter=dict(
-                width=20, value=internalGetDefault("triggerCharacter")
+                width=25, value=internalGetDefault("triggerCharacter")
             ),
             triggerCharacterMeasurement=dict(
-                width=20, value=internalGetDefault("triggerCharacterMeasurement")
+                width=25, value=internalGetDefault("triggerCharacterMeasurement")
+            ),
+            measurementExtend=dict(
+                width=numberEntryWidth,
+                valueType="number",
+                value=internalGetDefault("measurementExtend")
             ),
             measurementTextSize=dict(
                 width=numberEntryWidth,
@@ -169,6 +176,9 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
         self.mainCallback(sender)
 
     def triggerCharacterMeasurementCallback(self, sender):
+        self.mainCallback(sender)
+
+    def measurementExtendCallback(self, sender):
         self.mainCallback(sender)
 
     def measurementTextSizeCallback(self, sender):

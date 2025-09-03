@@ -66,6 +66,7 @@ extensionKeyStub = extensionID + "."
 defaults = {
     extensionKeyStub + "triggerCharacter": "f",
     extensionKeyStub + "triggerCharacterMeasurement": "g",
+    extensionKeyStub + "measurementExtend": "5",
     extensionKeyStub + "lineColor": (0, 0.3, 1, 0.8),
     extensionKeyStub + "ovalColor": (0, 0.3, 1, 0.8),
     extensionKeyStub + "textColor": (1, 1, 1, 0.8),
@@ -246,6 +247,7 @@ class StemPlowSubscriber(subscriber.Subscriber):
 
         self.triggerCharacter = internalGetDefault("triggerCharacter")
         self.triggerCharacterMeasurement = internalGetDefault("triggerCharacterMeasurement")
+        self.measurementExtend = internalGetDefault("measurementExtend")
         self.measureAlways = bool(internalGetDefault("measureAlways"))
         self.useShortcutToMoveWhileAlways = bool(
             internalGetDefault("useShortcutToMoveWhileAlways")
@@ -646,11 +648,26 @@ class StemPlowSubscriber(subscriber.Subscriber):
         return font
 
     def dropMeasurment(self, info):
-        glyph = info['glyph']
-        measurement = glyph.naked().measurements.instantiateMeasurement()
-        measurement.startPoint = self.nearestP1
-        measurement.endPoint = self.nearestP2
-        glyph.naked().measurements.append(measurement)
+        if self.nearestP1 and self.nearestP2:
+            x1 = self.nearestP1[0]
+            y1 = self.nearestP1[1]
+            x2 = self.nearestP2[0]
+            y2 = self.nearestP2[1]
+            extend_by = int(self.measurementExtend)
+
+            dx = x2 - x1
+            dy = y2 - y1
+            linelen = math.hypot(dx, dy)
+            x3 = x2 + dx/linelen * extend_by
+            y3 = y2 + dy/linelen * extend_by
+            x0 = x1 - dx/linelen * extend_by
+            y0 = y1 - dy/linelen * extend_by
+
+            glyph = info['glyph']
+            measurement = glyph.naked().measurements.instantiateMeasurement()
+            measurement.startPoint = (x0, y0)
+            measurement.endPoint = (x3, y3)
+            glyph.naked().measurements.append(measurement)
 
 
 
