@@ -65,6 +65,7 @@ extensionKeyStub = extensionID + "."
 
 defaults = {
     extensionKeyStub + "triggerCharacter": "f",
+    extensionKeyStub + "triggerCharacterMeasurement": "g",
     extensionKeyStub + "lineColor": (0, 0.3, 1, 0.8),
     extensionKeyStub + "ovalColor": (0, 0.3, 1, 0.8),
     extensionKeyStub + "textColor": (1, 1, 1, 0.8),
@@ -244,6 +245,7 @@ class StemPlowSubscriber(subscriber.Subscriber):
         self.stemPlowRuler.loadDefaults()
 
         self.triggerCharacter = internalGetDefault("triggerCharacter")
+        self.triggerCharacterMeasurement = internalGetDefault("triggerCharacterMeasurement")
         self.measureAlways = bool(internalGetDefault("measureAlways"))
         self.useShortcutToMoveWhileAlways = bool(
             internalGetDefault("useShortcutToMoveWhileAlways")
@@ -413,6 +415,7 @@ class StemPlowSubscriber(subscriber.Subscriber):
                     self.stemPlowRuler.getGuidesAndAnchoredPoint,
                 )
 
+
                 self.updateText()
                 self.updateLinesAndOvals()
             self.currentGlyphReference = info["glyph"].name
@@ -421,10 +424,16 @@ class StemPlowSubscriber(subscriber.Subscriber):
         isTriggerCharPressed = (
             info["deviceState"]["keyDownWithoutModifiers"] == self.triggerCharacter
         )
+        istriggerCharacterMeasurementPressed = (
+            info["deviceState"]["keyDownWithoutModifiers"] == self.triggerCharacterMeasurement
+        )
 
         if isTriggerCharPressed and not self.measureAlways:
             self.wantsMeasurements = True
             self.showLayers()
+
+        elif istriggerCharacterMeasurementPressed and self.wantsMeasurements:
+            self.dropMeasurment(info)
 
         elif not isTriggerCharPressed and not self.measureAlways:
             self.wantsMeasurements = False
@@ -635,6 +644,14 @@ class StemPlowSubscriber(subscriber.Subscriber):
         else:
             font = glyph.font
         return font
+
+    def dropMeasurment(self, info):
+        glyph = info['glyph']
+        measurement = glyph.naked().measurements.instantiateMeasurement()
+        measurement.startPoint = self.nearestP1
+        measurement.endPoint = self.nearestP2
+        glyph.naked().measurements.append(measurement)
+
 
 
 class StemPlowRuler:

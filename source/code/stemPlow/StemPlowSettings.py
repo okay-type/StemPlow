@@ -31,8 +31,11 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
 
         ---
 
-        : Trigger Character:
+        : Trigger:
         [__]                                        @triggerCharacter
+
+        : Drop Measurement:
+        [__]                                        @triggerCharacterMeasurement
 
         ---
 
@@ -80,6 +83,9 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
             ),
             triggerCharacter=dict(
                 width=20, value=internalGetDefault("triggerCharacter")
+            ),
+            triggerCharacterMeasurement=dict(
+                width=20, value=internalGetDefault("triggerCharacterMeasurement")
             ),
             measurementTextSize=dict(
                 width=numberEntryWidth,
@@ -162,6 +168,9 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
     def triggerCharacterCallback(self, sender):
         self.mainCallback(sender)
 
+    def triggerCharacterMeasurementCallback(self, sender):
+        self.mainCallback(sender)
+
     def measurementTextSizeCallback(self, sender):
         self.mainCallback(sender)
 
@@ -192,6 +201,9 @@ class _StemPlowSettingsWindowController(ezui.WindowController):
         if existing == value:
             return
         if key == "triggerCharacter":
+            if len(sender.get()) != 1:
+                return
+        if key == "triggerCharacterMeasurement":
             if len(sender.get()) != 1:
                 return
         internalSetDefault(key, value)

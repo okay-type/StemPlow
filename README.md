@@ -11,6 +11,13 @@ You can edit its shortcut, behaviour and appearance by going to
 
 > ## Version log:
 >
+> - version 1.3
+>
+>   - Jackson added a feature to drop the Stem Plow display as a real Robofont Measurement, just press g while holding f
+>   - Shortcut customizable in the settings
+>   - Probably needs more testing, I don't know what I'm doing!
+>   - <3 Jackson at okaytype com
+>
 > - version 1.220
 >
 >   - `Measure always` now can be triggered On/Off with trigger key (works when `anchor guide to the outline` is off)
